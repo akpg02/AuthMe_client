@@ -6,9 +6,9 @@ import ForgotPassword from "../../components/authentication/forgot-password/forg
 const Auth = () => {
   return (
     <Routes>
-      <Route path="/" element={<Authentication />} />
-      <Route path="/register/complete" element={<RegisterComplete />} />
-      <Route path="/forgot/password" element={<ForgotPassword />} />
+      <Route path="" element={<Authentication />} />
+      <Route path="register/complete" element={<RegisterComplete />} />
+      <Route path="forgot/password" element={<ForgotPassword />} />
     </Routes>
   );
 };

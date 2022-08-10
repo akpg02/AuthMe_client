@@ -11,8 +11,8 @@ const PrimaryNavbar = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(selectCurrentUser);
 
-  const handleLogout = async () => {
-    await signOutUser();
+  const handleLogout = () => {
+    signOutUser();
     dispatch(logoutUser());
     navigate("/auth");
   };

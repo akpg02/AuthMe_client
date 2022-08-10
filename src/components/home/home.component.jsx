@@ -1,9 +1,21 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../../store/auth/auth.selector";
 
 import "./home.css";
 
 const Home = () => {
+  const { user } = useSelector(selectCurrentUser);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.token && user.role === "admin") {
+      navigate("/admin/dashboard");
+    } else if (user && user.token) {
+      navigate("/user/dashboard");
+    }
+  }, [navigate, user]);
 
   const handleCallToAction = () => {
     navigate("/auth");

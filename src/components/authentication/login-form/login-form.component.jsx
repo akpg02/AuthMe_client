@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,24 +17,22 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const { user } = useSelector(selectCurrentUser);
 
-  const roleBasedRedirect = () => {
-    if (user && user.role === "admin") {
-      navigate("/admin/dashboard");
-    } else {
-      navigate("/user/dashboard");
-    }
-    navigate(0);
-  };
+  useEffect(() => {
+    const roleBasedRedirect = () => {
+      if (user && user.role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (user) {
+        navigate("/user/history");
+      }
+    };
+    roleBasedRedirect();
+  }, [navigate, user]);
 
   const handleLoginUser = async (token) => {
     try {
       await dispatch(loginUser(token, { email }));
 
       toast.success("Login successful");
-      console.log("USER: ", user);
-      if (user) {
-        roleBasedRedirect();
-      }
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -65,7 +63,6 @@ const LoginForm = () => {
       const { email } = response.user;
       const { token } = await response.user.getIdTokenResult();
       dispatch(loginUser(token, { email }));
-      roleBasedRedirect();
     } catch (error) {
       console.log(error);
       toast.error(error.message);

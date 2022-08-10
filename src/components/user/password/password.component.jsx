@@ -37,7 +37,7 @@ const Password = () => {
     } catch (error) {
       setIsLoading(false);
       toast(error.message);
-      console.log(error.message);
+      console.log(error);
     }
   };
 

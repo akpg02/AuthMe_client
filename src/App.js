@@ -1,19 +1,22 @@
-import { useEffect } from "react";
+import { useEffect, lazy, Suspense } from "react";
 import { useDispatch } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { Route, Routes } from "react-router-dom";
 
 import { onAuthStateChangedListener } from "./utils/firebase/firebase.utils";
 import { fetchUser } from "./store/auth/auth.action";
-
-import PrimaryNavbar from "./routes/navigation/primary-navbar/primary-navbar.component";
-import Home from "./routes/home/home.component";
-import Auth from "./routes/auth/auth.component";
-import User from "./routes/user/user.component";
-import Admin from "./routes/admin/admin.component";
-import PageNotFound from "./routes/page-not-found/page-not-found.component";
-
 import "react-toastify/dist/ReactToastify.css";
+
+const PrimaryNavbar = lazy(() =>
+  import("./routes/navigation/primary-navbar/primary-navbar.component")
+);
+const Home = lazy(() => import("./routes/home/home.component"));
+const Auth = lazy(() => import("./routes/auth/auth.component"));
+const User = lazy(() => import("./routes/user/user.component"));
+const Admin = lazy(() => import("./routes/admin/admin.component"));
+const PageNotFound = lazy(() =>
+  import("./routes/page-not-found/page-not-found.component")
+);
 
 function App() {
   const dispatch = useDispatch();
@@ -28,18 +31,26 @@ function App() {
     return () => unsubscribe();
   }, [dispatch]);
 
+  const Spinner = () => (
+    <div className="spinner-border text-danger" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+  );
+
   return (
     <>
       <ToastContainer />
-      <Routes>
-        <Route path="/" element={<PrimaryNavbar />}>
-          <Route index element={<Home />} />
-          <Route path="auth/*" element={<Auth />} />
-          <Route path="user/*" element={<User />} />
-          <Route path="admin/*" element={<Admin />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<Spinner />}>
+        <Routes>
+          <Route path="/" element={<PrimaryNavbar />}>
+            <Route index element={<Home />} />
+            <Route path="auth/*" element={<Auth />} />
+            <Route path="user/*" element={<User />} />
+            <Route path="admin/*" element={<Admin />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </>
   );
 }
