@@ -1,5 +1,6 @@
 import { axiosAuth } from "../../utils/api/axios";
 import { AUTH_ACTION_TYPES } from "./auth.types";
+import { toast } from "react-toastify";
 
 export const fetchUser = (token) => async (dispatch) => {
   try {
@@ -47,11 +48,13 @@ export const registerUser = (token, userObj) => async (dispatch) => {
       type: AUTH_ACTION_TYPES.REGISTER_USER_SUCCESS,
       payload: updatedUser,
     });
+    toast.success("Registration successful");
   } catch (error) {
     dispatch({
       type: AUTH_ACTION_TYPES.REGISTER_USER_FAILED,
       payload: error.message,
     });
+    toast.error(error.message);
   }
 };
 
@@ -65,11 +68,13 @@ export const loginUser = (token, emailObj) => async (dispatch) => {
       type: AUTH_ACTION_TYPES.LOGIN_USER_SUCCESS,
       payload: updatedUser,
     });
+    toast.success("Login successful");
   } catch (error) {
     dispatch({
       type: AUTH_ACTION_TYPES.LOGIN_USER_FAILED,
       payload: error.message,
     });
+    toast.error(error.message);
   }
 };
 

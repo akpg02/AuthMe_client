@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   signInWithLinkInEmail,
@@ -30,10 +30,8 @@ const RegisterCompleteForm = () => {
     try {
       const userObj = { name, email };
       await dispatch(registerUser(token, userObj));
-      toast.success("Registration successful");
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
     }
   };
 
